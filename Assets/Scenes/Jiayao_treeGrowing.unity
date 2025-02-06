@@ -122,63 +122,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1001 &7817047
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1129970397093208203, guid: 42037ab7b7d9b4458bfe30777c3a2255, type: 3}
-      propertyPath: m_Name
-      value: PlantGrowingController
-      objectReference: {fileID: 0}
-    - target: {fileID: 1888959270522930893, guid: 42037ab7b7d9b4458bfe30777c3a2255, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1888959270522930893, guid: 42037ab7b7d9b4458bfe30777c3a2255, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.238
-      objectReference: {fileID: 0}
-    - target: {fileID: 1888959270522930893, guid: 42037ab7b7d9b4458bfe30777c3a2255, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.415
-      objectReference: {fileID: 0}
-    - target: {fileID: 1888959270522930893, guid: 42037ab7b7d9b4458bfe30777c3a2255, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1888959270522930893, guid: 42037ab7b7d9b4458bfe30777c3a2255, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1888959270522930893, guid: 42037ab7b7d9b4458bfe30777c3a2255, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1888959270522930893, guid: 42037ab7b7d9b4458bfe30777c3a2255, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1888959270522930893, guid: 42037ab7b7d9b4458bfe30777c3a2255, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1888959270522930893, guid: 42037ab7b7d9b4458bfe30777c3a2255, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1888959270522930893, guid: 42037ab7b7d9b4458bfe30777c3a2255, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 42037ab7b7d9b4458bfe30777c3a2255, type: 3}
 --- !u!1 &15184909
 GameObject:
   m_ObjectHideFlags: 0
@@ -867,10 +810,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1174532165}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 160, y: -32.760002}
+  m_SizeDelta: {x: 312, y: 33.52}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &234850082
 MonoBehaviour:
@@ -1639,7 +1582,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &333824058
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3136,10 +3079,10 @@ RectTransform:
   - {fileID: 1091374043}
   m_Father: {fileID: 657298185}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 144, y: -20}
+  m_SizeDelta: {x: 288, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &556313127
 MonoBehaviour:
@@ -3272,7 +3215,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1638276709}
+      - m_Target: {fileID: 3914058309469489317}
         m_TargetAssemblyTypeName: PlantGrowing, Assembly-CSharp
         m_MethodName: Initialize
         m_Mode: 1
@@ -3827,7 +3770,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 128}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &657298186
 MonoBehaviour:
@@ -4262,10 +4205,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1570100138}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 144, y: -20}
+  m_SizeDelta: {x: 256, y: 16.41}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &748897763
 MonoBehaviour:
@@ -4921,10 +4864,10 @@ RectTransform:
   - {fileID: 1926576029}
   m_Father: {fileID: 657298185}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 144, y: -64}
+  m_SizeDelta: {x: 288, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &846634664
 MonoBehaviour:
@@ -5057,7 +5000,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1638276709}
+      - m_Target: {fileID: 3914058309469489317}
         m_TargetAssemblyTypeName: PlantGrowing, Assembly-CSharp
         m_MethodName: AdvanceToNextStage
         m_Mode: 1
@@ -6657,10 +6600,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 556313126}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 144, y: -20}
+  m_SizeDelta: {x: 256, y: 16.41}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1091374044
 MonoBehaviour:
@@ -6971,7 +6914,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 320, y: 0}
+  m_SizeDelta: {x: 320, y: 289.52}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1119369080
 GameObject:
@@ -7454,10 +7397,10 @@ RectTransform:
   - {fileID: 234850081}
   m_Father: {fileID: 1098977402}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 160, y: -24.76}
+  m_SizeDelta: {x: 320, y: 49.52}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1174532166
 MonoBehaviour:
@@ -10075,10 +10018,10 @@ RectTransform:
   - {fileID: 748897762}
   m_Father: {fileID: 657298185}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 144, y: -108}
+  m_SizeDelta: {x: 288, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1570100139
 MonoBehaviour:
@@ -10211,7 +10154,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1638276709}
+      - m_Target: {fileID: 3914058309469489317}
         m_TargetAssemblyTypeName: PlantGrowing, Assembly-CSharp
         m_MethodName: Wither
         m_Mode: 1
@@ -10638,17 +10581,6 @@ Transform:
   - {fileID: 134401454}
   m_Father: {fileID: 1814185853}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1638276709 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3914058309475176434, guid: 42037ab7b7d9b4458bfe30777c3a2255, type: 3}
-  m_PrefabInstance: {fileID: 7817047}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aca451474581148d1abb0a3c0d7fe63c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1644982974
 GameObject:
   m_ObjectHideFlags: 0
@@ -11348,10 +11280,10 @@ RectTransform:
   - {fileID: 240590829}
   m_Father: {fileID: 1098977402}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 160, y: -169.52}
+  m_SizeDelta: {x: 320, y: 240}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1768059309
 MonoBehaviour:
@@ -12256,11 +12188,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5919106134362994298, guid: 5fca3702cdf1a214a94e69dcfa704e17, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.2399
+      value: 1.1878
       objectReference: {fileID: 0}
     - target: {fileID: 5919106134362994298, guid: 5fca3702cdf1a214a94e69dcfa704e17, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.35
+      value: 0.295
       objectReference: {fileID: 0}
     - target: {fileID: 5919106134362994298, guid: 5fca3702cdf1a214a94e69dcfa704e17, type: 3}
       propertyPath: m_LocalRotation.w
@@ -12296,7 +12228,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5919106134362994299, guid: 5fca3702cdf1a214a94e69dcfa704e17, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6609430562109696379, guid: 5fca3702cdf1a214a94e69dcfa704e17, type: 3}
       propertyPath: _volumeMask
@@ -12817,10 +12749,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 846634663}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 144, y: -20}
+  m_SizeDelta: {x: 256, y: 16.41}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1926576030
 MonoBehaviour:
@@ -14434,6 +14366,82 @@ Transform:
   - {fileID: 878689277}
   m_Father: {fileID: 911788854}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &2533219759358713183
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1999344563336775172, guid: 9a5518b85823144d8afb4f9f0f281909, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1999344563336775172, guid: 9a5518b85823144d8afb4f9f0f281909, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.238
+      objectReference: {fileID: 0}
+    - target: {fileID: 1999344563336775172, guid: 9a5518b85823144d8afb4f9f0f281909, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.415
+      objectReference: {fileID: 0}
+    - target: {fileID: 1999344563336775172, guid: 9a5518b85823144d8afb4f9f0f281909, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1999344563336775172, guid: 9a5518b85823144d8afb4f9f0f281909, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1999344563336775172, guid: 9a5518b85823144d8afb4f9f0f281909, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1999344563336775172, guid: 9a5518b85823144d8afb4f9f0f281909, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1999344563336775172, guid: 9a5518b85823144d8afb4f9f0f281909, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1999344563336775172, guid: 9a5518b85823144d8afb4f9f0f281909, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1999344563336775172, guid: 9a5518b85823144d8afb4f9f0f281909, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3303488264094702180, guid: 9a5518b85823144d8afb4f9f0f281909, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7717157957937009698, guid: 9a5518b85823144d8afb4f9f0f281909, type: 3}
+      propertyPath: m_Name
+      value: FlowerPot
+      objectReference: {fileID: 0}
+    - target: {fileID: 8426681381572507764, guid: 9a5518b85823144d8afb4f9f0f281909, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9a5518b85823144d8afb4f9f0f281909, type: 3}
+--- !u!114 &3914058309469489317 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4335616798859131938, guid: 9a5518b85823144d8afb4f9f0f281909, type: 3}
+  m_PrefabInstance: {fileID: 2533219759358713183}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aca451474581148d1abb0a3c0d7fe63c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -14447,7 +14455,7 @@ SceneRoots:
   - {fileID: 1852508445}
   - {fileID: 1788534287}
   - {fileID: 1245367313}
-  - {fileID: 7817047}
+  - {fileID: 2533219759358713183}
   - {fileID: 1356828461}
   - {fileID: 333824060}
   - {fileID: 1542409125}

@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class PlantGrowing : MonoBehaviour
 {
+    public int currentStageIndex = 0;
+    
     [SerializeField] private List<GameObject> _plantsInEachGrowingStage;
     [SerializeField] private List<GameObject> _vfxInEachGrowingStage;
 
     [SerializeField] private float _maxInactiveDuration = 2f; // the longest time a user is inactive before the plant withers
-
-    private int _currentStageIndex = 0;
 
     public void Initialize()
     {
@@ -19,16 +19,16 @@ public class PlantGrowing : MonoBehaviour
         {
             plant.SetActive(false);
         }
-        _currentStageIndex = 0;
+        currentStageIndex = 0;
     }
 
     public void AdvanceToNextStage()
     {
-        if (_currentStageIndex >= _plantsInEachGrowingStage.Count) return;
+        if (currentStageIndex >= _plantsInEachGrowingStage.Count) return;
         
-        if (_currentStageIndex > 0) _plantsInEachGrowingStage[_currentStageIndex - 1].SetActive(false);
-        _plantsInEachGrowingStage[_currentStageIndex].SetActive(true);
-        _currentStageIndex++;
+        if (currentStageIndex > 0) _plantsInEachGrowingStage[currentStageIndex - 1].SetActive(false);
+        _plantsInEachGrowingStage[currentStageIndex].SetActive(true);
+        currentStageIndex++;
     }
 
     public void Wither()
@@ -38,10 +38,10 @@ public class PlantGrowing : MonoBehaviour
 
     private IEnumerator AsyncWither()
     {
-        yield return _plantsInEachGrowingStage[_currentStageIndex].transform.DOShakePosition(.2f, 0.5f, 20)
+        yield return _plantsInEachGrowingStage[currentStageIndex].transform.DOShakePosition(.2f, 0.5f, 20)
             .SetEase(Ease.InOutQuad)
             .WaitForCompletion();
-        yield return _plantsInEachGrowingStage[_currentStageIndex].transform.DOScale(0.7f, 0.5f)
+        yield return _plantsInEachGrowingStage[currentStageIndex].transform.DOScale(0.7f, 0.5f)
             .SetEase(Ease.InOutQuad)
             .WaitForCompletion();
     }
