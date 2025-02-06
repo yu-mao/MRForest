@@ -7465,7 +7465,7 @@ MonoBehaviour:
   useRecommendedMSAALevel: 1
   _monoscopic: 0
   _sharpenType: 0
-  _enableDynamicResolution: 0
+  _enableDynamicResolution: 1
   minDynamicResolutionScale: 1
   maxDynamicResolutionScale: 1
   quest2MinDynamicResolutionScale: 1
@@ -7515,7 +7515,7 @@ MonoBehaviour:
   requestBodyTrackingPermissionOnStartup: 0
   requestFaceTrackingPermissionOnStartup: 0
   requestEyeTrackingPermissionOnStartup: 0
-  requestScenePermissionOnStartup: 0
+  requestScenePermissionOnStartup: 1
   requestRecordAudioPermissionOnStartup: 0
   _localDimming: 1
   _trackingOriginType: 1
@@ -15836,11 +15836,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpawnOnStart: 1
-  SpawnObject: {fileID: 6184331501469495210, guid: 730edd11e4c7063469a8ccaafc9458cb, type: 3}
+  SpawnObject: {fileID: 120485551204016027, guid: d093190602dd30b4b995be2e7f7ebc3b, type: 3}
   SpawnAmount: 5
   MaxIterations: 1000
   SpawnLocations: 0
-  Labels: -1
+  Labels: 793
   CheckOverlaps: 0
   OverrideBounds: -1
   LayerMask:
@@ -15893,11 +15893,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpawnOnStart: 1
-  SpawnObject: {fileID: 6501966149772953947, guid: 04d27656a8bd4b444a794d8d76f13d7b, type: 3}
+  SpawnObject: {fileID: 2764679220838225166, guid: 36037563ec5e98d4cb865a3dffc80641, type: 3}
   SpawnAmount: 6
   MaxIterations: 1000
   SpawnLocations: 0
-  Labels: -1
+  Labels: 793
   CheckOverlaps: 0
   OverrideBounds: -1
   LayerMask:
