@@ -8,10 +8,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Jiayao_treeGrowing.unity
     guid: 033390a33b1184ed3b907c0e2f777c9d
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/WellbeingMR.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/TestHeadsetMounted.unity
     guid: a107f7aae78ba45fca2bb51ca4855172
   m_configObjects:

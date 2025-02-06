@@ -22,7 +22,7 @@ public class FloorPrefabPlacer : MonoBehaviour
 
     private void Awake()
     {
-        isCurrentPlantGrowing = false;
+        isCurrentPlantGrowing = PlayerPrefs.GetInt(IsCurrentPlantGrowingPref, 0) == 1;
         anchorLoader = GetComponent<AnchorLoader>();
         LoadSavedAnchors();
     }
@@ -60,7 +60,8 @@ public class FloorPrefabPlacer : MonoBehaviour
 
     public void Initialized() => isInitialized = true;
 
-    public void PlantGrown() => SetCurrentPlantGrowing(false);
+    
+    public  void PlantGrown() => SetCurrentPlantGrowing(false);
 
     public void CreateSpatialAnchor(Vector3 position, Quaternion rotation)
     {

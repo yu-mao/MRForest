@@ -1,18 +1,23 @@
 using System;
 using UnityEngine;
 using TMPro;
+using UnityEngine.Serialization;
 
 public class HeadsetDetection : MonoBehaviour
 {
-    public TMP_Text timerTMP;    
-    public TMP_Text messageTMP; 
-    public float timerDuration = 120f;
+    public GameObject infoCanvas;
+    public GameObject uiCanvas;
+    public TMP_Text timerText;
+    public TMP_Text textTMP;    
+    public TMP_Text subTextTMP; 
+    private float timerDuration;
     private float remainingTime;
     private bool isTimerSessionActive = false;
     private bool timerCompleted = false;
     private DateTime? timerStartTime = null;
     private DateTime? timerEndTime = null;
     private bool isTimerRunning = false;
+    
 
     void Start()
     {
@@ -29,18 +34,6 @@ public class HeadsetDetection : MonoBehaviour
 
     void Update()
     {
-        if (OVRInput.GetDown(OVRInput.Button.One, OVRInput.Controller.RTouch))
-        {
-            isTimerSessionActive = true;
-            timerCompleted = false;
-            remainingTime = timerDuration;
-            timerStartTime = null;
-            timerEndTime = null;
-            isTimerRunning = false;
-            timerTMP.text = "Timer not started. Remove headset to begin countdown.";
-            messageTMP.text = "";
-        }
-
         if (isTimerRunning && timerEndTime.HasValue)
         {
             TimeSpan timeLeft = timerEndTime.Value - DateTime.UtcNow;
@@ -53,14 +46,34 @@ public class HeadsetDetection : MonoBehaviour
                 isTimerRunning = false;
                 timerStartTime = null;
                 timerEndTime = null;
-                timerTMP.text = "Time remaining: 0.0 s";
-                messageTMP.text = "Timer completed. ";
+                timerText.text = TimeSpan.FromSeconds(remainingTime).ToString(@"mm\:ss");
+                textTMP.text = "Timer completed.";
             }
             else
             {
-                timerTMP.text = "Time remaining: " + remainingTime.ToString("F1") + " s";
+                timerText.text = TimeSpan.FromSeconds(remainingTime).ToString(@"mm\:ss");
+                
             }
         }
+    }
+    
+    public void StartTimerSession()
+    {
+        uiCanvas.SetActive(false);
+        infoCanvas.SetActive(true);
+        isTimerSessionActive = true;
+        timerCompleted = false;
+        remainingTime = timerDuration;
+        timerStartTime = null;
+        timerEndTime = null;
+        isTimerRunning = false;
+        textTMP.text = "Your plant needs fresh air! Please remove your headset to help it grow.";
+        subTextTMP.text = "Remove headset to begin countdown.";
+    }
+
+    public void SetTimerDuration(float duration)
+    {
+        timerDuration = duration;
     }
 
     // Called when the headset is removed.
@@ -71,7 +84,7 @@ public class HeadsetDetection : MonoBehaviour
             timerStartTime = DateTime.UtcNow;
             timerEndTime = timerStartTime.Value.AddSeconds(remainingTime);
             isTimerRunning = true;
-            messageTMP.text = "";
+            subTextTMP.text = "";
         }
     }
 
@@ -87,15 +100,21 @@ public class HeadsetDetection : MonoBehaviour
                 isTimerRunning = false;
                 timerStartTime = null;
                 timerEndTime = null;
-                timerTMP.text = "Time remaining: " + remainingTime.ToString("F1") + " s";
-                messageTMP.text = "Warning: Timer paused. Please keep the headset off.";
+                textTMP.text = "Your plant needs fresh air! Please remove your headset to help it grow.";
+                subTextTMP.text = "Remove headset to resume countdown.";
             }
             else if (timerCompleted)
             {
-                timerTMP.text = "Time remaining: 0.0 s";
-                messageTMP.text = "Success";
-                isTimerSessionActive = false; // End the current session.
+                OnGrowPlantSuccess();
             }
         }
+    }
+    
+    private void OnGrowPlantSuccess()
+    {
+        textTMP.text = ""; 
+        subTextTMP.text = "Success! Your plant is growing.";
+        isTimerSessionActive = false;
+        
     }
 }
