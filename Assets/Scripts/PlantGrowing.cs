@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class PlantGrowing : MonoBehaviour
@@ -22,8 +24,25 @@ public class PlantGrowing : MonoBehaviour
 
     public void AdvanceToNextStage()
     {
+        if (_currentStageIndex >= _plantsInEachGrowingStage.Count) return;
+        
         if (_currentStageIndex > 0) _plantsInEachGrowingStage[_currentStageIndex - 1].SetActive(false);
         _plantsInEachGrowingStage[_currentStageIndex].SetActive(true);
-        if (_currentStageIndex < _plantsInEachGrowingStage.Count) _currentStageIndex++;
+        _currentStageIndex++;
+    }
+
+    public void Wither()
+    {
+        StartCoroutine(AsyncWither());
+    }
+
+    private IEnumerator AsyncWither()
+    {
+        yield return _plantsInEachGrowingStage[_currentStageIndex].transform.DOShakePosition(.2f, 0.5f, 20)
+            .SetEase(Ease.InOutQuad)
+            .WaitForCompletion();
+        yield return _plantsInEachGrowingStage[_currentStageIndex].transform.DOScale(0.7f, 0.5f)
+            .SetEase(Ease.InOutQuad)
+            .WaitForCompletion();
     }
 }
