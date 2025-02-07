@@ -28,11 +28,29 @@ public class PlantGrowing : MonoBehaviour
     public void AdvanceToNextStage()
     {
         if (currentStageIndex >= _plantsInEachGrowingStage.Count) return;
+        StartCoroutine(AsyncAdvance());
+    }
+
+    private IEnumerator AsyncAdvance()
+    {
         
-        if (currentStageIndex > 0) _plantsInEachGrowingStage[currentStageIndex - 1].SetActive(false);
-        _plantsInEachGrowingStage[currentStageIndex].SetActive(true);
         _animator.SetTrigger("appear");
+        
+        if (currentStageIndex > 0)
+        {
+            _plantsInEachGrowingStage[currentStageIndex - 1].SetActive(false);
+            
+        }
+        else
+        {
+            // fix some animation glitch
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        _plantsInEachGrowingStage[currentStageIndex].SetActive(true);
         currentStageIndex++;
+
+        yield break;
     }
 
     public void Wither()
