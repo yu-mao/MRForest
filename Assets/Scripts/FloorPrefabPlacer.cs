@@ -31,6 +31,7 @@ public class FloorPrefabPlacer : MonoBehaviour
     {
         if (OVRInput.GetDown(OVRInput.Button.Two, OVRInput.Controller.RTouch))
         {
+            SetCurrentPlantGrowing(false);
             UnsaveAllAnchors();
         }
 
@@ -63,6 +64,11 @@ public class FloorPrefabPlacer : MonoBehaviour
     
     public  void PlantGrown() => SetCurrentPlantGrowing(false);
 
+    public bool GetCurrentPlantStatus()
+    {
+        return isCurrentPlantGrowing;
+    }
+    
     public void CreateSpatialAnchor(Vector3 position, Quaternion rotation)
     {
         OVRSpatialAnchor spatialAnchor = Instantiate(potAnchorPrefab, position, rotation);
@@ -76,6 +82,7 @@ public class FloorPrefabPlacer : MonoBehaviour
 
     private void UnsaveAllAnchors()
     {
+        SetCurrentPlantGrowing(false);
         foreach (var anchor in anchors)
         {
             UnsaveAnchor(anchor);
@@ -94,8 +101,8 @@ public class FloorPrefabPlacer : MonoBehaviour
                 Debug.Log($"Anchor Uuid{i} deleted");
             }
             PlayerPrefs.DeleteKey(NumUuidsPlayerPref);
-            SetCurrentPlantGrowing(false);
         }
+        
     }
 
     private void UnsaveAnchor(OVRSpatialAnchor anchor)

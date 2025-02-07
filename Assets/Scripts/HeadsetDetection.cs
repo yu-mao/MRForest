@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.Serialization;
@@ -17,6 +19,7 @@ public class HeadsetDetection : MonoBehaviour
     private DateTime? timerStartTime = null;
     private DateTime? timerEndTime = null;
     private bool isTimerRunning = false;
+    [SerializeField] private FloorPrefabPlacer floorPrefabPlacer;
     
 
     void Start()
@@ -55,12 +58,28 @@ public class HeadsetDetection : MonoBehaviour
                 
             }
         }
+        
     }
     
     public void StartTimerSession()
     {
+        // Start a coroutine that waits until a plant is placed.
+        StartCoroutine(WaitForPlantThenStartTimer());
+    }
+
+    private IEnumerator WaitForPlantThenStartTimer()
+    {
         uiCanvas.SetActive(false);
         infoCanvas.SetActive(true);
+        // Keep checking the plant status each frame.
+        while (!floorPrefabPlacer.GetCurrentPlantStatus())
+        {
+            textTMP.text = "Please place a plant before starting a timer session.";
+            subTextTMP.text = "";
+            yield return null; // Wait for the next frame.
+        }
+        
+        // Once a plant is placed, start the timer session.
         isTimerSessionActive = true;
         timerCompleted = false;
         remainingTime = timerDuration;
@@ -79,7 +98,7 @@ public class HeadsetDetection : MonoBehaviour
     // Called when the headset is removed.
     private void HandleHMDUnmounted()
     {
-        if (isTimerSessionActive && remainingTime > 0 && !isTimerRunning)
+        if (isTimerSessionActive && remainingTime > 0 && !isTimerRunning && floorPrefabPlacer.GetCurrentPlantStatus())
         {
             timerStartTime = DateTime.UtcNow;
             timerEndTime = timerStartTime.Value.AddSeconds(remainingTime);
