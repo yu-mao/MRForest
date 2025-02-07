@@ -14805,6 +14805,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4335616798859131938, guid: 9a5518b85823144d8afb4f9f0f281909, type: 3}
+      propertyPath: _vfxGrowing
+      value: 
+      objectReference: {fileID: 1762961013488520401, guid: 0e9932076f7b14beaa8c969e76c81976, type: 3}
+    - target: {fileID: 4335616798859131938, guid: 9a5518b85823144d8afb4f9f0f281909, type: 3}
+      propertyPath: _vfxTransform
+      value: 
+      objectReference: {fileID: 2533219759358713184}
+    - target: {fileID: 4335616798859131938, guid: 9a5518b85823144d8afb4f9f0f281909, type: 3}
+      propertyPath: _vfxWithering
+      value: 
+      objectReference: {fileID: 1866578033866337578, guid: cb4ea31453b1645d9b25247ef7c787d2, type: 3}
     - target: {fileID: 7717157957937009698, guid: 9a5518b85823144d8afb4f9f0f281909, type: 3}
       propertyPath: m_Name
       value: FlowerPot
@@ -14814,6 +14826,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a5518b85823144d8afb4f9f0f281909, type: 3}
+--- !u!4 &2533219759358713184 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1185057926995930816, guid: 9a5518b85823144d8afb4f9f0f281909, type: 3}
+  m_PrefabInstance: {fileID: 2533219759358713183}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &3914058309469489317 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4335616798859131938, guid: 9a5518b85823144d8afb4f9f0f281909, type: 3}

@@ -9,7 +9,9 @@ public class PlantGrowing : MonoBehaviour
     [SerializeField] private List<GameObject> _plantsInEachGrowingStage;
     [SerializeField] private List<GameObject> _vfxInEachGrowingStage;
 
-    [SerializeField] private float _maxInactiveDuration = 2f; // the longest time a user is inactive before the plant withers
+    [SerializeField] private Transform _vfxTransform;
+    [SerializeField] private GameObject _vfxGrowing;
+    [SerializeField] private GameObject _vfxWithering;
     
     private Animator _animator;
     private bool _isAlive = true;
@@ -31,12 +33,12 @@ public class PlantGrowing : MonoBehaviour
         if (!_isAlive) return; 
         
         if (currentStageIndex >= _plantsInEachGrowingStage.Count) return;
+        
         StartCoroutine(AsyncAdvance());
     }
 
     private IEnumerator AsyncAdvance()
     {
-        
         _animator.SetTrigger("appear");
         
         if (currentStageIndex > 0)
@@ -52,6 +54,7 @@ public class PlantGrowing : MonoBehaviour
 
         _plantsInEachGrowingStage[currentStageIndex].SetActive(true);
         currentStageIndex++;
+        Instantiate(_vfxGrowing, _vfxTransform);
 
         yield break;
     }
@@ -60,6 +63,7 @@ public class PlantGrowing : MonoBehaviour
     {
         _animator.SetTrigger("wither");
         _isAlive = false;
+        Instantiate(_vfxWithering, _vfxTransform);
     }
 
     private void Start()
