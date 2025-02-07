@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -11,6 +12,8 @@ public class PlantGrowing : MonoBehaviour
     [SerializeField] private List<GameObject> _vfxInEachGrowingStage;
 
     [SerializeField] private float _maxInactiveDuration = 2f; // the longest time a user is inactive before the plant withers
+    
+    private Animator _animator;
 
     public void Initialize()
     {
@@ -28,6 +31,7 @@ public class PlantGrowing : MonoBehaviour
         
         if (currentStageIndex > 0) _plantsInEachGrowingStage[currentStageIndex - 1].SetActive(false);
         _plantsInEachGrowingStage[currentStageIndex].SetActive(true);
+        _animator.SetTrigger("appear");
         currentStageIndex++;
     }
 
@@ -44,5 +48,10 @@ public class PlantGrowing : MonoBehaviour
         yield return _plantsInEachGrowingStage[currentStageIndex].transform.DOScale(0.7f, 0.5f)
             .SetEase(Ease.InOutQuad)
             .WaitForCompletion();
+    }
+
+    private void Start()
+    {
+        _animator = GetComponent<Animator>();
     }
 }
