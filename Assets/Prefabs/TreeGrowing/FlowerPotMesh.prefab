@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3261228053417298885}
   - component: {fileID: 2500730153244723922}
   m_Layer: 0
-  m_Name: Flower Pot
+  m_Name: FlowerPotMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

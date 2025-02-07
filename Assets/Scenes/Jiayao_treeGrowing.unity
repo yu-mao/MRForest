@@ -14807,7 +14807,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7717157957937009698, guid: 9a5518b85823144d8afb4f9f0f281909, type: 3}
       propertyPath: m_Name
-      value: FlowerPot
+      value: FlowerPotOuter
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
