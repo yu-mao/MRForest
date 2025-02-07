@@ -15816,6 +15816,7 @@ GameObject:
   - component: {fileID: 1396563395}
   - component: {fileID: 1396563394}
   - component: {fileID: 1396563397}
+  - component: {fileID: 1396563398}
   m_Layer: 0
   m_Name: '[BuildingBlock] Find Spawn Positions'
   m_TagString: Untagged
@@ -15836,7 +15837,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpawnOnStart: 1
-  SpawnObject: {fileID: 120485551204016027, guid: d093190602dd30b4b995be2e7f7ebc3b, type: 3}
+  SpawnObject: {fileID: 3050048291660577789, guid: e02c974e9cb294c4c981724057fefa1b, type: 3}
   SpawnAmount: 5
   MaxIterations: 1000
   SpawnLocations: 0
@@ -15898,6 +15899,30 @@ MonoBehaviour:
   MaxIterations: 1000
   SpawnLocations: 0
   Labels: 793
+  CheckOverlaps: 0
+  OverrideBounds: -1
+  LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  SurfaceClearanceDistance: 0.5
+--- !u!114 &1396563398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1396563393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d14e43228043c04db9e374568cb89a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SpawnOnStart: 1
+  SpawnObject: {fileID: 990794171507911569, guid: bdbd2b68d36aace4ab408e120162bbba, type: 3}
+  SpawnAmount: 1
+  MaxIterations: 1000
+  SpawnLocations: 3
+  Labels: 1
   CheckOverlaps: 0
   OverrideBounds: -1
   LayerMask:
