@@ -14,8 +14,9 @@ public class PlantGrowing : MonoBehaviour
     [SerializeField] private float _maxInactiveDuration = 2f; // the longest time a user is inactive before the plant withers
     
     private Animator _animator;
+    private bool _isAlive = true;
 
-    public void Initialize()
+    public void Reset()
     {
         // hide all plants for later object pooling
         foreach (var plant in _plantsInEachGrowingStage)
@@ -23,10 +24,14 @@ public class PlantGrowing : MonoBehaviour
             plant.SetActive(false);
         }
         currentStageIndex = 0;
+        _isAlive = true;
+        _animator.SetTrigger("reset");
     }
 
     public void AdvanceToNextStage()
     {
+        if (!_isAlive) return; 
+        
         if (currentStageIndex >= _plantsInEachGrowingStage.Count) return;
         StartCoroutine(AsyncAdvance());
     }
@@ -56,6 +61,7 @@ public class PlantGrowing : MonoBehaviour
     public void Wither()
     {
         _animator.SetTrigger("wither");
+        _isAlive = false;
     }
 
     private void Start()
