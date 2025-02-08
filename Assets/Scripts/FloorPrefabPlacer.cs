@@ -19,6 +19,8 @@ public class FloorPrefabPlacer : MonoBehaviour
     private bool isInitialized;
     private bool isCurrentPlantGrowing;
     private AnchorLoader anchorLoader;
+    
+    
 
     private void Awake()
     {
@@ -72,7 +74,15 @@ public class FloorPrefabPlacer : MonoBehaviour
     public void CreateSpatialAnchor(Vector3 position, Quaternion rotation)
     {
         OVRSpatialAnchor spatialAnchor = Instantiate(potAnchorPrefab, position, rotation);
+        lastCreatedAnchor = spatialAnchor;
         StartCoroutine(AnchorCreated(spatialAnchor));
+        PlantGrowing plantGrowing = GameObject.FindObjectOfType<PlantGrowing>();
+        if (plantGrowing != null)
+        {
+            plantGrowing.Initialize();
+            PlayerPrefs.SetInt("PlantProgress", 0);
+            PlayerPrefs.Save();
+        }
     }
 
     private void LoadSavedAnchors()
@@ -145,7 +155,7 @@ public class FloorPrefabPlacer : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    private void SetCurrentPlantGrowing(bool state)
+    public void SetCurrentPlantGrowing(bool state)
     {
         isCurrentPlantGrowing = state;
         PlayerPrefs.SetInt(IsCurrentPlantGrowingPref, state ? 1 : 0);

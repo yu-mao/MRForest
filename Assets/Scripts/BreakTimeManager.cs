@@ -16,6 +16,8 @@ public class BreakTimeManager : MonoBehaviour
         defaultTime = PlayerPrefs.GetFloat(defaultTimePref, 10);
         timerText.text = TimeSpan.FromSeconds(defaultTime).ToString(@"mm\:ss");
         headsetDetection = GetComponent<HeadsetDetection>();
+        headsetDetection.SetTimerDuration(defaultTime);
+
     }
 
     // Start is called before the first frame update

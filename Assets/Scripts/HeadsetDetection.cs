@@ -71,16 +71,18 @@ public class HeadsetDetection : MonoBehaviour
     {
         uiCanvas.SetActive(false);
         infoCanvas.SetActive(true);
-        // Keep checking the plant status each frame.
         while (!floorPrefabPlacer.GetCurrentPlantStatus())
         {
+            Debug.Log("Plant status is false. Waiting for plant to be placed...");
             textTMP.text = "Please place a plant before starting a timer session.";
             subTextTMP.text = "";
-            yield return null; // Wait for the next frame.
+            yield return null;
         }
+        Debug.Log("Plant status is true. Proceeding with timer session.");
         
         // Once a plant is placed, start the timer session.
         isTimerSessionActive = true;
+        Debug.Log("Timer session is now active.");
         timerCompleted = false;
         remainingTime = timerDuration;
         timerStartTime = null;
@@ -98,12 +100,19 @@ public class HeadsetDetection : MonoBehaviour
     // Called when the headset is removed.
     private void HandleHMDUnmounted()
     {
-        if (isTimerSessionActive && remainingTime > 0 && !isTimerRunning && floorPrefabPlacer.GetCurrentPlantStatus())
+        Debug.Log("HMDUnmounted event triggered.");
+        Debug.Log($"isTimerSessionActive: {isTimerSessionActive}");
+        Debug.Log($"remainingTime: {remainingTime}");
+        Debug.Log($"isTimerRunning: {isTimerRunning}");
+        Debug.Log($"Plant status: {floorPrefabPlacer.GetCurrentPlantStatus()}");
+        if (isTimerSessionActive && remainingTime > 0 && !isTimerRunning)
         {
             timerStartTime = DateTime.UtcNow;
             timerEndTime = timerStartTime.Value.AddSeconds(remainingTime);
             isTimerRunning = true;
             subTextTMP.text = "";
+            Debug.Log("HMDUnmounted: Timer started.");
+
         }
     }
 
@@ -131,8 +140,28 @@ public class HeadsetDetection : MonoBehaviour
     
     private void OnGrowPlantSuccess()
     {
-        textTMP.text = ""; 
+        PlantGrowing plantGrowing = GameObject.FindObjectOfType<PlantGrowing>();    
+        if (plantGrowing != null)
+        {
+            plantGrowing.AdvanceToNextStage();
+            int currentProgress = PlayerPrefs.GetInt("PlantProgress", 0);
+            currentProgress++; 
+            PlayerPrefs.SetInt("PlantProgress", currentProgress);
+            PlayerPrefs.Save();
+        
+           
+            if (currentProgress >= plantGrowing.GetTotalStages())
+            {
+                Destroy(plantGrowing);
+                floorPrefabPlacer.SetCurrentPlantGrowing(false);
+            }
+        }
+    
+        // Update UI texts as needed.
+        textTMP.text = "";
         subTextTMP.text = "Success! Your plant is growing.";
+    
+        // End the current timer session.
         isTimerSessionActive = false;
         
     }

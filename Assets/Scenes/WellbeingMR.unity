@@ -574,7 +574,7 @@ MonoBehaviour:
   timerText: {fileID: 829634958}
   textTMP: {fileID: 1533097925}
   subTextTMP: {fileID: 1928917992}
-  floorPrefabPlacer: {fileID: 0}
+  floorPrefabPlacer: {fileID: 31358742}
 --- !u!1 &32104917
 GameObject:
   m_ObjectHideFlags: 0

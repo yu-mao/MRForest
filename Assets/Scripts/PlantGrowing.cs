@@ -45,4 +45,12 @@ public class PlantGrowing : MonoBehaviour
             .SetEase(Ease.InOutQuad)
             .WaitForCompletion();
     }
+    
+    public int CurrentStageIndex => _currentStageIndex;
+    public int TotalStages => _plantsInEachGrowingStage.Count;
+    
+    public int GetTotalStages()
+    {
+        return _plantsInEachGrowingStage.Count;
+    }
 }

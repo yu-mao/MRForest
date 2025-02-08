@@ -21,11 +21,26 @@ public class AnchorLoader : MonoBehaviour
     private void onLocalized(OVRSpatialAnchor.UnboundAnchor unboundAnchor, bool success)
     {
         if (!success) return;
-        
         var pose = unboundAnchor.Pose;
         var spatialAnchor = Instantiate(anchorPrefab, pose.position, pose.rotation);
         unboundAnchor.BindTo(spatialAnchor);
-
+        PlantGrowing plantGrowing = spatialAnchor.GetComponentInChildren<PlantGrowing>();
+        if (plantGrowing != null)
+        {
+            plantGrowing.Initialize();
+            int savedProgress = PlayerPrefs.GetInt("PlantProgress", 0);
+            for (int i = 0; i < savedProgress; i++)
+            {
+                plantGrowing.AdvanceToNextStage();
+            }
+        
+            Debug.Log("Loaded plant progress: " + savedProgress);
+        }
+        else
+        {
+            Debug.LogWarning("PlantGrowing component not found on the instantiated anchor or its children.");
+        }
+    
         if (spatialAnchor.TryGetComponent<OVRSpatialAnchor>(out var anchor))
         {
             Debug.Log(anchor.name + " is bound to " + spatialAnchor.name);
