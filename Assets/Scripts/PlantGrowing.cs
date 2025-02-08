@@ -1,49 +1,74 @@
 using System.Collections;
 using System.Collections.Generic;
-using DG.Tweening;
 using UnityEngine;
 
 public class PlantGrowing : MonoBehaviour
 {
+    public int currentStageIndex = 0;
+    
     [SerializeField] private List<GameObject> _plantsInEachGrowingStage;
     [SerializeField] private List<GameObject> _vfxInEachGrowingStage;
 
-    [SerializeField] private float _maxInactiveDuration = 2f; // the longest time a user is inactive before the plant withers
+    [SerializeField] private Transform _vfxTransform;
+    [SerializeField] private GameObject _vfxGrowing;
+    [SerializeField] private GameObject _vfxWithering;
+    
+    private Animator _animator;
+    private bool _isAlive = true;
 
-    private int _currentStageIndex = 0;
-
-    public void Initialize()
+    public void Reset()
     {
         // hide all plants for later object pooling
         foreach (var plant in _plantsInEachGrowingStage)
         {
             plant.SetActive(false);
         }
-        _currentStageIndex = 0;
+        currentStageIndex = 0;
+        _isAlive = true;
+        _animator.SetTrigger("reset");
     }
 
     public void AdvanceToNextStage()
     {
-        if (_currentStageIndex >= _plantsInEachGrowingStage.Count) return;
+        if (!_isAlive) return; 
         
-        if (_currentStageIndex > 0) _plantsInEachGrowingStage[_currentStageIndex - 1].SetActive(false);
-        _plantsInEachGrowingStage[_currentStageIndex].SetActive(true);
-        _currentStageIndex++;
+        if (currentStageIndex >= _plantsInEachGrowingStage.Count) return;
+        
+        StartCoroutine(AsyncAdvance());
+    }
+
+    private IEnumerator AsyncAdvance()
+    {
+        _animator.SetTrigger("appear");
+        
+        if (currentStageIndex > 0)
+        {
+            _plantsInEachGrowingStage[currentStageIndex - 1].SetActive(false);
+            
+        }
+        else
+        {
+            // fix some animation glitch
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        _plantsInEachGrowingStage[currentStageIndex].SetActive(true);
+        currentStageIndex++;
+        Instantiate(_vfxGrowing, _vfxTransform);
+
+        yield break;
     }
 
     public void Wither()
     {
-        StartCoroutine(AsyncWither());
+        _animator.SetTrigger("wither");
+        _isAlive = false;
+        Instantiate(_vfxWithering, _vfxTransform);
     }
 
-    private IEnumerator AsyncWither()
+    private void Start()
     {
-        yield return _plantsInEachGrowingStage[_currentStageIndex].transform.DOShakePosition(.2f, 0.5f, 20)
-            .SetEase(Ease.InOutQuad)
-            .WaitForCompletion();
-        yield return _plantsInEachGrowingStage[_currentStageIndex].transform.DOScale(0.7f, 0.5f)
-            .SetEase(Ease.InOutQuad)
-            .WaitForCompletion();
+        _animator = GetComponent<Animator>();
     }
     
     public int CurrentStageIndex => _currentStageIndex;
