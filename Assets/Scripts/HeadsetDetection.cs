@@ -3,7 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine.Serialization;
+using UnityEngine.UIElements;
+using Image = UnityEngine.UI.Image;
 
 public class HeadsetDetection : MonoBehaviour
 {
@@ -19,9 +22,12 @@ public class HeadsetDetection : MonoBehaviour
     private DateTime? timerStartTime = null;
     private DateTime? timerEndTime = null;
     private bool isTimerRunning = false;
+    [SerializeField] private GameObject successGameObject;
+    [SerializeField] private GameObject failureGameObject;
+    [SerializeField] private GameObject interactionGameObject;
+    [SerializeField] private Image panelImage;
     [SerializeField] private FloorPrefabPlacer floorPrefabPlacer;
-    
-
+        
     void Start()
     {
         OVRManager.HMDMounted += HandleHMDMounted;
@@ -73,14 +79,11 @@ public class HeadsetDetection : MonoBehaviour
         infoCanvas.SetActive(true);
         while (!floorPrefabPlacer.GetCurrentPlantStatus())
         {
-            Debug.Log("Plant status is false. Waiting for plant to be placed...");
             textTMP.text = "Please place a plant before starting a timer session.";
             subTextTMP.text = "";
             yield return null;
         }
-        Debug.Log("Plant status is true. Proceeding with timer session.");
         
-        // Once a plant is placed, start the timer session.
         isTimerSessionActive = true;
         Debug.Log("Timer session is now active.");
         timerCompleted = false;
@@ -100,11 +103,7 @@ public class HeadsetDetection : MonoBehaviour
     // Called when the headset is removed.
     private void HandleHMDUnmounted()
     {
-        Debug.Log("HMDUnmounted event triggered.");
-        Debug.Log($"isTimerSessionActive: {isTimerSessionActive}");
-        Debug.Log($"remainingTime: {remainingTime}");
-        Debug.Log($"isTimerRunning: {isTimerRunning}");
-        Debug.Log($"Plant status: {floorPrefabPlacer.GetCurrentPlantStatus()}");
+        panelImage.color = new Color32(0, 33, 21, 203);
         if (isTimerSessionActive && remainingTime > 0 && !isTimerRunning)
         {
             timerStartTime = DateTime.UtcNow;
@@ -112,7 +111,6 @@ public class HeadsetDetection : MonoBehaviour
             isTimerRunning = true;
             subTextTMP.text = "";
             Debug.Log("HMDUnmounted: Timer started.");
-
         }
     }
 
@@ -130,9 +128,21 @@ public class HeadsetDetection : MonoBehaviour
                 timerEndTime = null;
                 textTMP.text = "Your plant needs fresh air! Please remove your headset to help it grow.";
                 subTextTMP.text = "Remove headset to resume countdown.";
+                SetGameObjectActiveRecursively(uiCanvas, false);
+                panelImage.GameObject().SetActive(true);
+                panelImage.color = new Color32(110, 18, 0, 203);
+                uiCanvas.SetActive(true);
+                failureGameObject.SetActive(true);
+                interactionGameObject.SetActive(true);
+
             }
             else if (timerCompleted)
             {
+                SetGameObjectActiveRecursively(uiCanvas, false);
+                panelImage.GameObject().SetActive(true);
+                uiCanvas.SetActive(true);
+                successGameObject.SetActive(true);
+                interactionGameObject.SetActive(true);
                 OnGrowPlantSuccess();
             }
         }
@@ -140,29 +150,70 @@ public class HeadsetDetection : MonoBehaviour
     
     private void OnGrowPlantSuccess()
     {
-        PlantGrowing plantGrowing = GameObject.FindObjectOfType<PlantGrowing>();    
+        // Retrieve the active plant from FloorPrefabPlacer.
+        PlantGrowing plantGrowing = floorPrefabPlacer.GetActivePlantGrowingComponent();
         if (plantGrowing != null)
         {
-            plantGrowing.AdvanceToNextStage();
-            int currentProgress = PlayerPrefs.GetInt("PlantProgress", 0);
-            currentProgress++; 
-            PlayerPrefs.SetInt("PlantProgress", currentProgress);
-            PlayerPrefs.Save();
-        
-           
-            if (currentProgress >= plantGrowing.GetTotalStages())
+            OVRSpatialAnchor anchor = plantGrowing.GetComponentInParent<OVRSpatialAnchor>();
+
+            if (anchor != null)
             {
-                Destroy(plantGrowing);
-                floorPrefabPlacer.SetCurrentPlantGrowing(false);
+                string progressKey = "PlantProgress_" + anchor.Uuid.ToString();
+                int currentProgress = PlayerPrefs.GetInt(progressKey, 0);
+                int totalStages = plantGrowing.GetTotalStages();
+                Debug.Log($"[OnGrowPlantSuccess] currentProgress = {currentProgress}, TotalStages = {totalStages}");
+
+                if (currentProgress < totalStages)
+                {
+                    //Give yourself a little more rest so you can get full reward 
+                    //to make your plant grow strong!
+                    plantGrowing.AdvanceToNextStage();
+                    currentProgress++;
+                    PlayerPrefs.SetInt(progressKey, currentProgress);
+                    PlayerPrefs.Save();
+                    Debug.Log($"[OnGrowPlantSuccess] Advanced to stage {currentProgress}");
+            
+                    if (currentProgress >= totalStages)
+                    {
+                        Debug.Log("[OnGrowPlantSuccess] Plant reached full growth. Clearing active plant flag and resetting progress.");
+                        floorPrefabPlacer.SetCurrentPlantGrowing(false);
+                        PlayerPrefs.DeleteKey(FloorPrefabPlacer.LastCreatedAnchorUUIDKey);
+                        PlayerPrefs.DeleteKey(progressKey);  // Clean up when fully grown
+                        PlayerPrefs.Save();
+                    }
+                }
+                else
+                {
+                    Debug.Log("[OnGrowPlantSuccess] Plant is already fully grown. Clearing active plant flag and resetting progress.");
+                    floorPrefabPlacer.SetCurrentPlantGrowing(false);
+                    PlayerPrefs.DeleteKey(FloorPrefabPlacer.LastCreatedAnchorUUIDKey);
+                    PlayerPrefs.DeleteKey(progressKey);  // Clean up when fully grown
+                    PlayerPrefs.Save();
+                }
             }
+            else
+            {
+                Debug.LogError("[OnGrowPlantSuccess] Could not find OVRSpatialAnchor component!");
+            } 
+            
+        }
+        else
+        {
+            Debug.Log("[OnGrowPlantSuccess] No active PlantGrowing component found.");
         }
     
-        // Update UI texts as needed.
         textTMP.text = "";
         subTextTMP.text = "Success! Your plant is growing.";
-    
-        // End the current timer session.
         isTimerSessionActive = false;
-        
+        Debug.Log("[OnGrowPlantSuccess] Timer session ended.");
+    }
+    
+    private void SetGameObjectActiveRecursively(GameObject obj, bool state)
+    {
+        obj.SetActive(state);
+        foreach (Transform child in obj.transform)
+        {
+            child.gameObject.SetActive(state);
+        }
     }
 }

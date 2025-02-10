@@ -15,17 +15,26 @@ public class PlantGrowing : MonoBehaviour
     
     private Animator _animator;
     private bool _isAlive = true;
+    
 
     public void Reset()
     {
-        // hide all plants for later object pooling
+        Debug.Log("[PlantGrowing] Reset called.");
         foreach (var plant in _plantsInEachGrowingStage)
         {
             plant.SetActive(false);
         }
         currentStageIndex = 0;
         _isAlive = true;
-        _animator.SetTrigger("reset");
+        
+        if (_animator != null)
+        {
+            _animator.SetTrigger("reset");
+        }
+        else
+        {
+            Debug.LogError("[PlantGrowing] Cannot reset because _animator is null.");
+        }
     }
 
     public void AdvanceToNextStage()
@@ -39,23 +48,54 @@ public class PlantGrowing : MonoBehaviour
 
     private IEnumerator AsyncAdvance()
     {
-        _animator.SetTrigger("appear");
-        
-        if (currentStageIndex > 0)
+        Debug.Log($"[AsyncAdvance] Starting. currentStageIndex = {currentStageIndex}");
+    
+        if (_animator == null)
         {
-            _plantsInEachGrowingStage[currentStageIndex - 1].SetActive(false);
-            
+            Debug.LogError("[AsyncAdvance] Animator is null! Make sure the Animator component is attached.");
         }
         else
         {
-            // fix some animation glitch
+            _animator.SetTrigger("appear");
+            Debug.Log("[AsyncAdvance] Trigger 'appear' set on animator.");
+        }
+
+        if (currentStageIndex > 0)
+        {
+            Debug.Log($"[AsyncAdvance] Deactivating previous stage at index {currentStageIndex - 1}");
+            _plantsInEachGrowingStage[currentStageIndex - 1].SetActive(false);
+        }
+        else
+        {
+            Debug.Log("[AsyncAdvance] First stage: waiting 0.5 seconds to avoid animation glitch.");
             yield return new WaitForSeconds(0.5f);
         }
 
-        _plantsInEachGrowingStage[currentStageIndex].SetActive(true);
+        // Check if the list contains an element at the current index.
+        if (currentStageIndex < _plantsInEachGrowingStage.Count)
+        {
+            Debug.Log($"[AsyncAdvance] Activating stage at index {currentStageIndex}");
+            _plantsInEachGrowingStage[currentStageIndex].SetActive(true);
+        }
+        else
+        {
+            Debug.LogError($"[AsyncAdvance] currentStageIndex ({currentStageIndex}) is out of range! List count: {_plantsInEachGrowingStage.Count}");
+        }
+    
         currentStageIndex++;
-        Instantiate(_vfxGrowing, _vfxTransform);
-
+        Debug.Log($"[AsyncAdvance] Incremented currentStageIndex to {currentStageIndex}");
+    
+        // Instantiate VFX at the specified transform position/rotation
+        if (_vfxGrowing != null && _vfxTransform != null)
+        {
+            Instantiate(_vfxGrowing, _vfxTransform.position, _vfxTransform.rotation);
+            Debug.Log("[AsyncAdvance] Instantiated growing VFX.");
+        }
+        else
+        {
+            Debug.LogWarning("[AsyncAdvance] VFX growing prefab or transform is null.");
+        }
+    
         yield break;
     }
 
@@ -66,16 +106,28 @@ public class PlantGrowing : MonoBehaviour
         Instantiate(_vfxWithering, _vfxTransform);
     }
 
-    private void Start()
+    private void Awake()
     {
         _animator = GetComponent<Animator>();
+        if (_animator == null)
+        {
+            Debug.LogError("[PlantGrowing] Animator is missing!");
+        }
     }
     
-    public int CurrentStageIndex => _currentStageIndex;
-    public int TotalStages => _plantsInEachGrowingStage.Count;
+    public int CurrentStageIndex => currentStageIndex;
     
     public int GetTotalStages()
     {
         return _plantsInEachGrowingStage.Count;
+    }
+    
+    public void SetFullGrownState()
+    {
+        for (int i = 0; i < _plantsInEachGrowingStage.Count; i++)
+        {
+            _plantsInEachGrowingStage[i].SetActive(i == _plantsInEachGrowingStage.Count - 1);
+        }
+        currentStageIndex = _plantsInEachGrowingStage.Count;
     }
 }

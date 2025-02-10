@@ -9,6 +9,8 @@ public class FloorPrefabPlacer : MonoBehaviour
     // Constants
     public const string NumUuidsPlayerPref = "NumUuids";
     public const string IsCurrentPlantGrowingPref = "IsCurrentPlantGrowing";
+    public const string LastCreatedAnchorUUIDKey = "LastCreatedAnchorUUID";
+
 
     // Prefab Reference
     public OVRSpatialAnchor potAnchorPrefab;
@@ -64,8 +66,6 @@ public class FloorPrefabPlacer : MonoBehaviour
     public void Initialized() => isInitialized = true;
 
     
-    public  void PlantGrown() => SetCurrentPlantGrowing(false);
-
     public bool GetCurrentPlantStatus()
     {
         return isCurrentPlantGrowing;
@@ -74,14 +74,19 @@ public class FloorPrefabPlacer : MonoBehaviour
     public void CreateSpatialAnchor(Vector3 position, Quaternion rotation)
     {
         OVRSpatialAnchor spatialAnchor = Instantiate(potAnchorPrefab, position, rotation);
-        lastCreatedAnchor = spatialAnchor;
         StartCoroutine(AnchorCreated(spatialAnchor));
-        PlantGrowing plantGrowing = GameObject.FindObjectOfType<PlantGrowing>();
+        
+        PlantGrowing plantGrowing = spatialAnchor.GetComponentInChildren<PlantGrowing>();
         if (plantGrowing != null)
         {
-            plantGrowing.Initialize();
-            PlayerPrefs.SetInt("PlantProgress", 0);
+            plantGrowing.Reset();
+            string progressKey = "PlantProgress_" + spatialAnchor.Uuid.ToString();
+            PlayerPrefs.SetInt(progressKey, 0); 
             PlayerPrefs.Save();
+        }
+        else
+        {
+            Debug.LogWarning("[FloorPrefabPlacer] No PlantGrowing component found on the new anchor.");
         }
     }
 
@@ -112,7 +117,7 @@ public class FloorPrefabPlacer : MonoBehaviour
             }
             PlayerPrefs.DeleteKey(NumUuidsPlayerPref);
         }
-        
+        PlayerPrefs.DeleteAll();
     }
 
     private void UnsaveAnchor(OVRSpatialAnchor anchor)
@@ -131,15 +136,18 @@ public class FloorPrefabPlacer : MonoBehaviour
         }
 
         Guid anchorUuid = spatialAnchor.Uuid;
+        Debug.Log($"[AnchorCreated] Valid anchor UUID: {anchorUuid}");
+
         anchors.Add(spatialAnchor);
         
         spatialAnchor.Save((savedAnchor, success) =>
         {
             Debug.Log($"Created anchor Saved {anchorUuid}");
         });
-        
-        SaveUuidToPlayerPrefs(anchorUuid);
+        PlayerPrefs.SetString(LastCreatedAnchorUUIDKey, anchorUuid.ToString());
+        PlayerPrefs.Save();
         lastCreatedAnchor = spatialAnchor;
+        SaveUuidToPlayerPrefs(anchorUuid);
     }
 
     private void SaveUuidToPlayerPrefs(Guid anchorUuid)
@@ -160,5 +168,18 @@ public class FloorPrefabPlacer : MonoBehaviour
         isCurrentPlantGrowing = state;
         PlayerPrefs.SetInt(IsCurrentPlantGrowingPref, state ? 1 : 0);
         PlayerPrefs.Save();
+    }
+    
+    public PlantGrowing GetActivePlantGrowingComponent()
+    {
+        if (lastCreatedAnchor != null)
+            return lastCreatedAnchor.GetComponent<PlantGrowing>();
+        return null;
+    }
+    
+    public void SetLastCreatedAnchor(OVRSpatialAnchor anchor)
+    {
+        lastCreatedAnchor = anchor;
+        Debug.Log($"[FloorPrefabPlacer] Set lastCreatedAnchor to {anchor.name} with UUID {anchor.Uuid}");
     }
 }

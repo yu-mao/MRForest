@@ -20,30 +20,54 @@ public class AnchorLoader : MonoBehaviour
 
     private void onLocalized(OVRSpatialAnchor.UnboundAnchor unboundAnchor, bool success)
     {
-        if (!success) return;
+        Debug.Log($"[AnchorLoader] onLocalized called for anchor {unboundAnchor.Uuid}, success: {success}");
+    
+        if (!success)
+        {
+            Debug.LogError($"[AnchorLoader] Failed to localize anchor {unboundAnchor.Uuid}");
+            return;
+        }
+
         var pose = unboundAnchor.Pose;
         var spatialAnchor = Instantiate(anchorPrefab, pose.position, pose.rotation);
+        Debug.Log($"[AnchorLoader] Instantiated new anchor at position {pose.position}");
+    
         unboundAnchor.BindTo(spatialAnchor);
+    
+        string lastCreatedUUID = PlayerPrefs.GetString(FloorPrefabPlacer.LastCreatedAnchorUUIDKey, "");
+        Debug.Log($"[AnchorLoader] Last created UUID: {lastCreatedUUID}");
+    
+        // If this is the last created anchor, update FloorPrefabPlacer
+        if (spatialAnchor.Uuid.ToString() == lastCreatedUUID)
+        {
+            Debug.Log("[AnchorLoader] This is the last created anchor, updating FloorPrefabPlacer reference");
+            floorPrefabPlacer.SetLastCreatedAnchor(spatialAnchor);
+        }
+    
         PlantGrowing plantGrowing = spatialAnchor.GetComponentInChildren<PlantGrowing>();
         if (plantGrowing != null)
         {
-            plantGrowing.Initialize();
-            int savedProgress = PlayerPrefs.GetInt("PlantProgress", 0);
-            for (int i = 0; i < savedProgress; i++)
+            plantGrowing.Reset();
+            if (spatialAnchor.Uuid.ToString() == lastCreatedUUID)
             {
-                plantGrowing.AdvanceToNextStage();
+                string progressKey = "PlantProgress_" + spatialAnchor.Uuid.ToString();
+                int savedProgress = PlayerPrefs.GetInt(progressKey, 0);
+                
+                    for (int i = 0; i < savedProgress; i++)
+                    {
+                        plantGrowing.AdvanceToNextStage();
+                    }
+                Debug.Log($"[AnchorLoader] Loading progress for active plant: {savedProgress}");
             }
-        
-            Debug.Log("Loaded plant progress: " + savedProgress);
+            else
+            {
+                Debug.Log("[AnchorLoader] Setting plant to full grown state");
+                plantGrowing.SetFullGrownState();
+            }
         }
         else
         {
-            Debug.LogWarning("PlantGrowing component not found on the instantiated anchor or its children.");
-        }
-    
-        if (spatialAnchor.TryGetComponent<OVRSpatialAnchor>(out var anchor))
-        {
-            Debug.Log(anchor.name + " is bound to " + spatialAnchor.name);
+            Debug.LogWarning("[AnchorLoader] No PlantGrowing component found on the instantiated anchor");
         }
     }
 
@@ -70,7 +94,7 @@ public class AnchorLoader : MonoBehaviour
 
         Load(new OVRSpatialAnchor.LoadOptions
         {
-            Timeout = 5,
+            Timeout = 10,
             StorageLocation = OVRSpace.StorageLocation.Local,
             Uuids = uuids
         });
@@ -78,6 +102,7 @@ public class AnchorLoader : MonoBehaviour
 
     private void Load(OVRSpatialAnchor.LoadOptions loadOptions)
     {
+        Debug.Log("[AnchorLoader] Load method: Loading anchors from " + loadOptions.StorageLocation);
         OVRSpatialAnchor.LoadUnboundAnchors(loadOptions, anchors =>
         {
             if (anchors == null)
@@ -94,16 +119,5 @@ public class AnchorLoader : MonoBehaviour
             }
         });
     }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }
