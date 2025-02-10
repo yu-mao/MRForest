@@ -28,6 +28,7 @@ public class HeadsetDetection : MonoBehaviour
     [SerializeField] private GameObject interactionGameObject;
     [SerializeField] private GameObject rewardGameObject;
     [SerializeField] private Image panelImage;
+    [SerializeField] private CurrentProgress currentProgressUI;
     [SerializeField] private FloorPrefabPlacer floorPrefabPlacer;
         
     void Start()
@@ -71,7 +72,7 @@ public class HeadsetDetection : MonoBehaviour
     
     public void StartTimerSession()
     {
-        rewardGameObject.SetActive(true);
+       
         // Start a coroutine that waits until a plant is placed.
         StartCoroutine(WaitForPlantThenStartTimer());
     }
@@ -87,7 +88,7 @@ public class HeadsetDetection : MonoBehaviour
             yield return null;
         }
         //Reward Logic Here
-
+        rewardGameObject.SetActive(true);
         while (!isRewardCollected)
         {
             textTMP.text = "Please collect rewards.";
@@ -178,6 +179,7 @@ public class HeadsetDetection : MonoBehaviour
 
                 if (currentProgress < totalStages)
                 {
+                    currentProgressUI.SetProgress(currentProgress, 3);
                     //Give yourself a little more rest so you can get full reward 
                     //to make your plant grow strong!
                     plantGrowing.AdvanceToNextStage();

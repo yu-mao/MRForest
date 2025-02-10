@@ -8,7 +8,8 @@ public class AnchorLoader : MonoBehaviour
 {
     private OVRSpatialAnchor anchorPrefab;
     private FloorPrefabPlacer floorPrefabPlacer;
-    
+    [SerializeField] private CurrentProgress currentProgressUI;
+
     Action<OVRSpatialAnchor.UnboundAnchor, bool> _onAnchorLoaded;
 
     private void Awake()
@@ -53,6 +54,7 @@ public class AnchorLoader : MonoBehaviour
                 string progressKey = "PlantProgress_" + spatialAnchor.Uuid.ToString();
                 int savedProgress = PlayerPrefs.GetInt(progressKey, 0);
                 
+                currentProgressUI.SetProgress(savedProgress, 3);
                     for (int i = 0; i < savedProgress; i++)
                     {
                         plantGrowing.AdvanceToNextStage();
