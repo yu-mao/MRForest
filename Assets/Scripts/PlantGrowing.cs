@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,8 @@ public class PlantGrowing : MonoBehaviour
     [SerializeField] private Transform _vfxTransform;
     [SerializeField] private GameObject _vfxGrowing;
     [SerializeField] private GameObject _vfxWithering;
+    
+    [SerializeField] private GameObject _growingEffect;
     
     private Animator _animator;
     private bool _isAlive = true;
@@ -128,6 +131,15 @@ public class PlantGrowing : MonoBehaviour
         {
             _plantsInEachGrowingStage[i].SetActive(i == _plantsInEachGrowingStage.Count - 1);
         }
+        _growingEffect.SetActive(false);
         currentStageIndex = _plantsInEachGrowingStage.Count;
+    }
+
+    private void Update()
+    {
+        if (OVRInput.GetDown(OVRInput.Button.One, OVRInput.Controller.LTouch))
+        {
+            Wither();
+        }
     }
 }

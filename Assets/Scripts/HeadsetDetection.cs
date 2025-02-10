@@ -22,9 +22,11 @@ public class HeadsetDetection : MonoBehaviour
     private DateTime? timerStartTime = null;
     private DateTime? timerEndTime = null;
     private bool isTimerRunning = false;
+    public bool isRewardCollected = false;
     [SerializeField] private GameObject successGameObject;
     [SerializeField] private GameObject failureGameObject;
     [SerializeField] private GameObject interactionGameObject;
+    [SerializeField] private GameObject rewardGameObject;
     [SerializeField] private Image panelImage;
     [SerializeField] private FloorPrefabPlacer floorPrefabPlacer;
         
@@ -69,6 +71,7 @@ public class HeadsetDetection : MonoBehaviour
     
     public void StartTimerSession()
     {
+        rewardGameObject.SetActive(true);
         // Start a coroutine that waits until a plant is placed.
         StartCoroutine(WaitForPlantThenStartTimer());
     }
@@ -83,6 +86,16 @@ public class HeadsetDetection : MonoBehaviour
             subTextTMP.text = "";
             yield return null;
         }
+        //Reward Logic Here
+
+        while (!isRewardCollected)
+        {
+            textTMP.text = "Please collect rewards.";
+            subTextTMP.text = "";
+            yield return null;
+        }
+        
+        rewardGameObject.SetActive(false);
         
         isTimerSessionActive = true;
         Debug.Log("Timer session is now active.");
