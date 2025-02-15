@@ -43,10 +43,13 @@ public class BreakTimeManager : MonoBehaviour
 
     public void DecreaseTime()
     {
-        defaultTime -= 10;
-        headsetDetection.SetTimerDuration(defaultTime);;
-        PlayerPrefs.SetFloat(defaultTimePref, defaultTime);
-        PlayerPrefs.Save();
-        timerText.text = TimeSpan.FromSeconds(defaultTime).ToString(@"mm\:ss");
+        if (defaultTime > 10)
+        {
+            defaultTime -= 10;
+            headsetDetection.SetTimerDuration(defaultTime);
+            PlayerPrefs.SetFloat(defaultTimePref, defaultTime);
+            PlayerPrefs.Save();
+            timerText.text = TimeSpan.FromSeconds(defaultTime).ToString(@"mm\:ss");
+        }
     }
 }

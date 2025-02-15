@@ -164,7 +164,6 @@ public class HeadsetDetection : MonoBehaviour
     
     private void OnGrowPlantSuccess()
     {
-        // Retrieve the active plant from FloorPrefabPlacer.
         PlantGrowing plantGrowing = floorPrefabPlacer.GetActivePlantGrowingComponent();
         if (plantGrowing != null)
         {
@@ -175,22 +174,17 @@ public class HeadsetDetection : MonoBehaviour
                 string progressKey = "PlantProgress_" + anchor.Uuid.ToString();
                 int currentProgress = PlayerPrefs.GetInt(progressKey, 0);
                 int totalStages = plantGrowing.GetTotalStages();
-                Debug.Log($"[OnGrowPlantSuccess] currentProgress = {currentProgress}, TotalStages = {totalStages}");
 
                 if (currentProgress < totalStages)
                 {
                     currentProgressUI.SetProgress(currentProgress, 3);
-                    //Give yourself a little more rest so you can get full reward 
-                    //to make your plant grow strong!
                     plantGrowing.AdvanceToNextStage();
                     currentProgress++;
                     PlayerPrefs.SetInt(progressKey, currentProgress);
                     PlayerPrefs.Save();
-                    Debug.Log($"[OnGrowPlantSuccess] Advanced to stage {currentProgress}");
             
                     if (currentProgress >= totalStages)
                     {
-                        Debug.Log("[OnGrowPlantSuccess] Plant reached full growth. Clearing active plant flag and resetting progress.");
                         floorPrefabPlacer.SetCurrentPlantGrowing(false);
                         PlayerPrefs.DeleteKey(FloorPrefabPlacer.LastCreatedAnchorUUIDKey);
                         PlayerPrefs.DeleteKey(progressKey);  // Clean up when fully grown
@@ -199,7 +193,6 @@ public class HeadsetDetection : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("[OnGrowPlantSuccess] Plant is already fully grown. Clearing active plant flag and resetting progress.");
                     floorPrefabPlacer.SetCurrentPlantGrowing(false);
                     PlayerPrefs.DeleteKey(FloorPrefabPlacer.LastCreatedAnchorUUIDKey);
                     PlayerPrefs.DeleteKey(progressKey);  // Clean up when fully grown

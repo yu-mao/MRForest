@@ -1,55 +1,47 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class AnchorLoader : MonoBehaviour
 {
-    private OVRSpatialAnchor anchorPrefab;
-    private FloorPrefabPlacer floorPrefabPlacer;
+    private OVRSpatialAnchor _anchorPrefab;
+    private FloorPrefabPlacer _floorPrefabPlacer;
     [SerializeField] private CurrentProgress currentProgressUI;
 
     Action<OVRSpatialAnchor.UnboundAnchor, bool> _onAnchorLoaded;
 
     private void Awake()
     {
-        floorPrefabPlacer = GetComponent<FloorPrefabPlacer>();
-        anchorPrefab = floorPrefabPlacer.potAnchorPrefab;
-        _onAnchorLoaded = onLocalized;
+        _floorPrefabPlacer = GetComponent<FloorPrefabPlacer>();
+        _anchorPrefab = _floorPrefabPlacer.potAnchorPrefab;
+        _onAnchorLoaded = OnLocalized;
     }
 
-    private void onLocalized(OVRSpatialAnchor.UnboundAnchor unboundAnchor, bool success)
+    private void OnLocalized(OVRSpatialAnchor.UnboundAnchor unboundAnchor, bool success)
     {
-        Debug.Log($"[AnchorLoader] onLocalized called for anchor {unboundAnchor.Uuid}, success: {success}");
-    
         if (!success)
         {
-            Debug.LogError($"[AnchorLoader] Failed to localize anchor {unboundAnchor.Uuid}");
+            Debug.Log("[AnchorLoader] Not Success");
             return;
         }
 
-        var pose = unboundAnchor.Pose;
-        var spatialAnchor = Instantiate(anchorPrefab, pose.position, pose.rotation);
-        Debug.Log($"[AnchorLoader] Instantiated new anchor at position {pose.position}");
-    
+        
+        unboundAnchor.TryGetPose(out Pose pose);
+        var spatialAnchor = Instantiate(_anchorPrefab, pose.position, pose.rotation);
         unboundAnchor.BindTo(spatialAnchor);
     
-        string lastCreatedUUID = PlayerPrefs.GetString(FloorPrefabPlacer.LastCreatedAnchorUUIDKey, "");
-        Debug.Log($"[AnchorLoader] Last created UUID: {lastCreatedUUID}");
+        string lastCreatedUuid = PlayerPrefs.GetString(FloorPrefabPlacer.LastCreatedAnchorUUIDKey, "");
     
-        // If this is the last created anchor, update FloorPrefabPlacer
-        if (spatialAnchor.Uuid.ToString() == lastCreatedUUID)
+        if (spatialAnchor.Uuid.ToString() == lastCreatedUuid)
         {
             Debug.Log("[AnchorLoader] This is the last created anchor, updating FloorPrefabPlacer reference");
-            floorPrefabPlacer.SetLastCreatedAnchor(spatialAnchor);
+            _floorPrefabPlacer.SetLastCreatedAnchor(spatialAnchor);
         }
     
         PlantGrowing plantGrowing = spatialAnchor.GetComponentInChildren<PlantGrowing>();
         if (plantGrowing != null)
         {
             plantGrowing.Reset();
-            if (spatialAnchor.Uuid.ToString() == lastCreatedUUID)
+            if (spatialAnchor.Uuid.ToString() == lastCreatedUuid)
             {
                 string progressKey = "PlantProgress_" + spatialAnchor.Uuid.ToString();
                 int savedProgress = PlayerPrefs.GetInt(progressKey, 0);

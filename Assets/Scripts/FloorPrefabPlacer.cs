@@ -64,7 +64,7 @@ public class FloorPrefabPlacer : MonoBehaviour
     }
 
     public void Initialized() => isInitialized = true;
-
+    
     
     public bool GetCurrentPlantStatus()
     {
@@ -136,7 +136,6 @@ public class FloorPrefabPlacer : MonoBehaviour
         }
 
         Guid anchorUuid = spatialAnchor.Uuid;
-        Debug.Log($"[AnchorCreated] Valid anchor UUID: {anchorUuid}");
 
         anchors.Add(spatialAnchor);
         
@@ -182,4 +181,6 @@ public class FloorPrefabPlacer : MonoBehaviour
         lastCreatedAnchor = anchor;
         Debug.Log($"[FloorPrefabPlacer] Set lastCreatedAnchor to {anchor.name} with UUID {anchor.Uuid}");
     }
+
+    
 }
