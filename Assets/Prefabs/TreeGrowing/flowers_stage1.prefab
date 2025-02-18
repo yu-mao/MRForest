@@ -2292,7 +2292,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8690821272451810703}
-  - component: {fileID: 6333465445285234684}
   m_Layer: 0
   m_Name: flower01
   m_TagString: Untagged
@@ -2324,27 +2323,6 @@ Transform:
   - {fileID: 4998457293819657531}
   m_Father: {fileID: 2588075816559509156}
   m_LocalEulerAnglesHint: {x: -17.973, y: -7.898, z: 24.207}
---- !u!95 &6333465445285234684
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3822320314408164440}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: da1981c3ee8ea7e4186a753e15495628, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3885960774756644485
 GameObject:
   m_ObjectHideFlags: 0

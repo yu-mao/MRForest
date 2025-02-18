@@ -24,13 +24,15 @@ public class HeadsetDetection : MonoBehaviour
     private bool isTimerRunning = false;
     public bool isRewardCollected = false;
     [SerializeField] private GameObject successGameObject;
+    [SerializeField] private GameObject attachmentPoint;
     [SerializeField] private GameObject failureGameObject;
     [SerializeField] private GameObject interactionGameObject;
     [SerializeField] private GameObject rewardGameObject;
     [SerializeField] private Image panelImage;
     [SerializeField] private CurrentProgress currentProgressUI;
     [SerializeField] private FloorPrefabPlacer floorPrefabPlacer;
-        
+    private bool menuManuallyEnabled = false;
+
     void Start()
     {
         OVRManager.HMDMounted += HandleHMDMounted;
@@ -46,6 +48,20 @@ public class HeadsetDetection : MonoBehaviour
 
     void Update()
     {
+        if (OVRInput.GetDown(OVRInput.RawButton.Start))
+        {
+            if (!isTimerSessionActive)
+            {
+                uiCanvas.gameObject.transform.position = attachmentPoint.transform.position;
+                uiCanvas.SetActive(!uiCanvas.activeSelf);
+                menuManuallyEnabled = uiCanvas.activeSelf;
+            }
+            else if (uiCanvas.activeSelf && menuManuallyEnabled)
+            {
+                uiCanvas.SetActive(false);
+                menuManuallyEnabled = false;
+            }
+        }
         if (isTimerRunning && timerEndTime.HasValue)
         {
             TimeSpan timeLeft = timerEndTime.Value - DateTime.UtcNow;
@@ -164,6 +180,7 @@ public class HeadsetDetection : MonoBehaviour
     
     private void OnGrowPlantSuccess()
     {
+        // Retrieve the active plant from FloorPrefabPlacer.
         PlantGrowing plantGrowing = floorPrefabPlacer.GetActivePlantGrowingComponent();
         if (plantGrowing != null)
         {
@@ -174,17 +191,22 @@ public class HeadsetDetection : MonoBehaviour
                 string progressKey = "PlantProgress_" + anchor.Uuid.ToString();
                 int currentProgress = PlayerPrefs.GetInt(progressKey, 0);
                 int totalStages = plantGrowing.GetTotalStages();
+                Debug.Log($"[OnGrowPlantSuccess] currentProgress = {currentProgress}, TotalStages = {totalStages}");
 
                 if (currentProgress < totalStages)
                 {
-                    currentProgressUI.SetProgress(currentProgress, 3);
-                    plantGrowing.AdvanceToNextStage();
+                    //Give yourself a little more rest so you can get full reward 
+                    //to make your plant grow strong!
+                    plantGrowing.AdvanceToNextStage(currentProgress);
                     currentProgress++;
+                    currentProgressUI.SetProgress(currentProgress, 3);
                     PlayerPrefs.SetInt(progressKey, currentProgress);
                     PlayerPrefs.Save();
+                    Debug.Log($"[OnGrowPlantSuccess] Advanced to stage {currentProgress}");
             
                     if (currentProgress >= totalStages)
                     {
+                        Debug.Log("[OnGrowPlantSuccess] Plant reached full growth. Clearing active plant flag and resetting progress.");
                         floorPrefabPlacer.SetCurrentPlantGrowing(false);
                         PlayerPrefs.DeleteKey(FloorPrefabPlacer.LastCreatedAnchorUUIDKey);
                         PlayerPrefs.DeleteKey(progressKey);  // Clean up when fully grown
@@ -193,6 +215,7 @@ public class HeadsetDetection : MonoBehaviour
                 }
                 else
                 {
+                    Debug.Log("[OnGrowPlantSuccess] Plant is already fully grown. Clearing active plant flag and resetting progress.");
                     floorPrefabPlacer.SetCurrentPlantGrowing(false);
                     PlayerPrefs.DeleteKey(FloorPrefabPlacer.LastCreatedAnchorUUIDKey);
                     PlayerPrefs.DeleteKey(progressKey);  // Clean up when fully grown

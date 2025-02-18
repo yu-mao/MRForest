@@ -47,10 +47,7 @@ public class AnchorLoader : MonoBehaviour
                 int savedProgress = PlayerPrefs.GetInt(progressKey, 0);
                 
                 currentProgressUI.SetProgress(savedProgress, 3);
-                    for (int i = 0; i < savedProgress; i++)
-                    {
-                        plantGrowing.AdvanceToNextStage();
-                    }
+                plantGrowing.AdvanceToNextStage(savedProgress -1);
                 Debug.Log($"[AnchorLoader] Loading progress for active plant: {savedProgress}");
             }
             else
@@ -97,16 +94,30 @@ public class AnchorLoader : MonoBehaviour
     private void Load(OVRSpatialAnchor.LoadOptions loadOptions)
     {
         Debug.Log("[AnchorLoader] Load method: Loading anchors from " + loadOptions.StorageLocation);
+
         OVRSpatialAnchor.LoadUnboundAnchors(loadOptions, anchors =>
         {
             if (anchors == null)
+            {
+                Debug.LogWarning("[AnchorLoader] LoadUnboundAnchors returned null!");
                 return;
+            }
+
+            Debug.Log($"[AnchorLoader] anchors.Length = {anchors.Length}");
+        
+            if (anchors.Length == 0)
+            {
+                Debug.LogWarning("[AnchorLoader] No anchors found in local storage.");
+            }
+
             foreach (var anchor in anchors)
             {
+                Debug.Log($"[AnchorLoader] Found anchor {anchor.Uuid}, localized? {anchor.Localized}");
                 if (anchor.Localized)
                 {
                     _onAnchorLoaded(anchor, true);
-                }else if (!anchor.Localized)
+                }
+                else
                 {
                     anchor.Localize(_onAnchorLoaded);
                 }

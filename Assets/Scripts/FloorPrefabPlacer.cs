@@ -24,13 +24,14 @@ public class FloorPrefabPlacer : MonoBehaviour
     
     
 
-    private void Awake()
+    private void Start()
     {
         isCurrentPlantGrowing = PlayerPrefs.GetInt(IsCurrentPlantGrowingPref, 0) == 1;
         anchorLoader = GetComponent<AnchorLoader>();
         LoadSavedAnchors();
     }
 
+    
     private void Update()
     {
         if (OVRInput.GetDown(OVRInput.Button.Two, OVRInput.Controller.RTouch))
@@ -141,8 +142,9 @@ public class FloorPrefabPlacer : MonoBehaviour
         
         spatialAnchor.Save((savedAnchor, success) =>
         {
-            Debug.Log($"Created anchor Saved {anchorUuid}");
+            Debug.Log($"Anchor {anchorUuid} saved successfully? {success}");
         });
+        
         PlayerPrefs.SetString(LastCreatedAnchorUUIDKey, anchorUuid.ToString());
         PlayerPrefs.Save();
         lastCreatedAnchor = spatialAnchor;

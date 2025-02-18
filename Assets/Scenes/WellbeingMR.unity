@@ -725,7 +725,6 @@ GameObject:
   - component: {fileID: 31358742}
   - component: {fileID: 31358747}
   - component: {fileID: 31358746}
-  - component: {fileID: 31358748}
   - component: {fileID: 31358749}
   m_Layer: 0
   m_Name: GameManager
@@ -807,28 +806,13 @@ MonoBehaviour:
   subTextTMP: {fileID: 1928917992}
   isRewardCollected: 0
   successGameObject: {fileID: 316080947}
+  attachmentPoint: {fileID: 2129498592}
   failureGameObject: {fileID: 463930438}
   interactionGameObject: {fileID: 1439296546}
   rewardGameObject: {fileID: 1537520721}
   panelImage: {fileID: 1240312900}
   currentProgressUI: {fileID: 31358749}
   floorPrefabPlacer: {fileID: 31358742}
---- !u!114 &31358748
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 31358741}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f9048692d18a49d9ae7ecd0fe145d44, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  menu: {fileID: 782628375}
-  attachmentPoint: {fileID: 2129498592}
-  infoCanvas: {fileID: 2018392832}
-  menuToggleEnabled: 1
 --- !u!114 &31358749
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12621,11 +12605,11 @@ PrefabInstance:
     - target: {fileID: 503534209763693075, guid: e476ebd7a9209417e8d89d40c4bba804, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 31358748}
+      objectReference: {fileID: 0}
     - target: {fileID: 771986531281353077, guid: e476ebd7a9209417e8d89d40c4bba804, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 31358748}
+      objectReference: {fileID: 0}
     - target: {fileID: 1041608575693319424, guid: e476ebd7a9209417e8d89d40c4bba804, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -12789,7 +12773,7 @@ PrefabInstance:
     - target: {fileID: 6463200875203542323, guid: e476ebd7a9209417e8d89d40c4bba804, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 31358748}
+      objectReference: {fileID: 0}
     - target: {fileID: 6799954589670416724, guid: e476ebd7a9209417e8d89d40c4bba804, type: 3}
       propertyPath: m_Camera
       value: 
@@ -27760,19 +27744,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <SceneLoadedEvent>k__BackingField:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 31358742}
-        m_TargetAssemblyTypeName: FloorPrefabPlacer, Assembly-CSharp
-        m_MethodName: Initialized
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   <RoomCreatedEvent>k__BackingField:
     m_PersistentCalls:
       m_Calls: []

@@ -19,15 +19,26 @@ public class Utils : MonoBehaviour
 
     private void Update()
     {
+        Vector3 forward = attachmentPoint.transform.forward;
+        forward.y = 0;
+        forward.Normalize();
+        Vector3 newPosition = attachmentPoint.transform.position + forward * 0.5f;
+        menu.transform.position = newPosition;
+        infoCanvas.transform.position = newPosition;
+        
+        Quaternion yRotation = Quaternion.Euler(
+            0, 
+            attachmentPoint.transform.rotation.eulerAngles.y, 
+            0
+        );
+        
+        menu.transform.rotation = yRotation;
+        infoCanvas.transform.rotation = yRotation;
+        
         if (OVRInput.GetDown(OVRInput.RawButton.Start))
         {
-            menu.transform.position = attachmentPoint.transform.position;
-            infoCanvas.transform.position = attachmentPoint.transform.position;
-            menu.transform.rotation = attachmentPoint.transform.rotation;
-            infoCanvas.transform.rotation = attachmentPoint.transform.rotation;
+
             menu.SetActive(!menu.activeSelf);
         }
-        
-
     }
 }

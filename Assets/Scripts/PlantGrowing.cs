@@ -15,6 +15,7 @@ public class PlantGrowing : MonoBehaviour
     
     private Animator _animator;
     private bool _isAlive = true;
+    private bool isAdvancing = false;
     
     public void Reset()
     {
@@ -30,17 +31,24 @@ public class PlantGrowing : MonoBehaviour
         }
     }
 
-    public void AdvanceToNextStage()
+    public void AdvanceToNextStage(int savedProgress)
     {
+        currentStageIndex = savedProgress;
         if (!_isAlive || currentStageIndex >= _plantsInEachGrowingStage.Count) return;
         StartCoroutine(AsyncAdvance());
     }
 
     private IEnumerator AsyncAdvance()
     {
-        if (_animator != null)
+
+        if (_animator != null && currentStageIndex == 1)
         {
             _animator.SetTrigger("appear");
+        }
+        
+        foreach (var plant in _plantsInEachGrowingStage)
+        {
+            plant.SetActive(false);
         }
 
         if (currentStageIndex > 0)
@@ -63,7 +71,7 @@ public class PlantGrowing : MonoBehaviour
         {
             Instantiate(_vfxGrowing, _vfxTransform.position, _vfxTransform.rotation);
         }
-    
+
         yield break;
     }
 
